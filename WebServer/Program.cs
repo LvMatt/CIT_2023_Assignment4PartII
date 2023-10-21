@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-
+Console.WriteLine("TEST ME!");
 // Add services to the container.
 builder.Services.AddMvcCore();
 
