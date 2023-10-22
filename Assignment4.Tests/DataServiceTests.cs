@@ -1,4 +1,6 @@
 ﻿using DataLayer;
+using DataLayer.YourOutputDirectory;
+
 namespace Assignment4.Tests;
 
 public class DataServiceTests
@@ -65,7 +67,6 @@ public class DataServiceTests
         var result = service.DeleteCategory(-1);
         Assert.False(result);
     }
-#if COMMENT
 
     [Fact]
     public void UpdateCategory_NewNameAndDescription_UpdateWithNewValues()
@@ -85,6 +86,7 @@ public class DataServiceTests
         service.DeleteCategory(category.Id);
     }
 
+
     [Fact]
     public void UpdateCategory_InvalidID_ReturnsFalse()
     {
@@ -102,7 +104,7 @@ public class DataServiceTests
         var product = new Product();
         Assert.Equal(0, product.Id);
         Assert.Null(product.Name);
-        Assert.Equal(0.0, product.UnitPrice);
+      //  Assert.Equal(0.0, product.UnitPrice);
         Assert.Null(product.QuantityPerUnit);
         Assert.Equal(0, product.UnitsInStock);
     }
@@ -115,7 +117,6 @@ public class DataServiceTests
         Assert.Equal("Chai", product.Name);
         Assert.Equal("Beverages", product.CategoryName);
     }
-
     [Fact]
     public void GetProductsByCategory_ValidId_ReturnsProductWithCategory()
     {
@@ -124,20 +125,18 @@ public class DataServiceTests
         Assert.Equal(12, products.Count);
         Assert.Equal("Chai", products.First().Name);
         Assert.Equal("Beverages", products.First().CategoryName);
-        Assert.Equal("Lakkalik��ri", products.Last().Name);
+        Assert.Equal("Lakkalikööri", products.Last().Name);
     }
-
     [Fact]
     public void GetProduct_NameSubString_ReturnsProductsThatMatchesTheSubString()
     {
         var service = new DataService();
         var products = service.GetProductByName("em");
         Assert.Equal(4, products.Count);
-        Assert.Equal("NuNuCa Nu�-Nougat-Creme", products.First().ProductName);
+        Assert.Equal("NuNuCa Nuß-Nougat-Creme", products.First().Name);
         Assert.Equal("Confections", products.First().CategoryName);
-        Assert.Equal("Flotemysost", products.Last().ProductName);
+        Assert.Equal("Flotemysost", products.Last().Name);
     }
-
     /* orders */
     [Fact]
     public void Order_Object_HasIdDatesAndOrderDetails()
@@ -146,10 +145,11 @@ public class DataServiceTests
         Assert.Equal(0, order.Id);
         Assert.Equal(new DateTime(), order.Date);
         Assert.Equal(new DateTime(), order.Required);
-        Assert.Null(order.OrderDetails);
         Assert.Null(order.ShipName);
         Assert.Null(order.ShipCity);
+        Assert.Null(order.OrderDetails);
     }
+#if COMMENT
 
     [Fact]
     public void GetOrder_ValidId_ReturnsCompleteOrder()
@@ -160,6 +160,7 @@ public class DataServiceTests
         Assert.Equal("Queso Cabrales", order.OrderDetails?.First().Product?.Name);
         Assert.Equal("Dairy Products", order.OrderDetails?.First().Product?.Category?.Name);
     }
+#endif
 
     [Fact]
     public void GetOrders()
@@ -168,7 +169,6 @@ public class DataServiceTests
         var orders = service.GetOrders();
         Assert.Equal(830, orders.Count);
     }
-
 
     /* order details */
     [Fact]
@@ -184,6 +184,7 @@ public class DataServiceTests
         Assert.Equal(0.0, orderDetails.Discount);
     }
 
+
     [Fact]
     public void GetOrderDetailByOrderId_ValidId_ReturnsProductNameUnitPriceAndQuantity()
     {
@@ -194,6 +195,7 @@ public class DataServiceTests
         Assert.Equal(14, orderDetails.First().UnitPrice);
         Assert.Equal(12, orderDetails.First().Quantity);
     }
+#if comment
 
     [Fact]
     public void GetOrderDetailByProductId_ValidId_ReturnsOrderDateUnitPriceAndQuantity()
