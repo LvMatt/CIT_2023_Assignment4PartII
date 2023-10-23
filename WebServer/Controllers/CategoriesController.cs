@@ -37,6 +37,38 @@ public class CategoriesController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("{id:int}")]
+    public IActionResult UpdateCategory(int id, [FromBody] UpdateCategoryModel? updatedCategory)
+    {
+
+        if (updatedCategory.Id != null && id == null || id == 0)
+        {
+            id = updatedCategory.Id;
+        }
+
+        var existingCategory = _dataService.GetCategory(updatedCategory.Id);
+        if (existingCategory == null)
+        {
+            Console.WriteLine("not found!");
+            return NotFound(); // Category not found, return 404 Not Found response.
+        }
+        var updCategory = _dataService.UpdateCategory(id, updatedCategory.Name, updatedCategory.Description);
+        // Return the updated category.
+        return Ok(updCategory);
+    }
+
+    [HttpPost]
+    public IActionResult CreateCategory([FromBody] UpdateCategoryModel newCategory)
+    {
+        var createdCategory = new UpdateCategoryModel
+        {
+            Id = 9,
+            Description = newCategory.Description,
+            Name = newCategory.Name
+        };
+        // Return the updated category.
+        return Created("", createdCategory);
+    }
 
     [HttpDelete("{id}")]
     public IActionResult RemoveCategory(int id)
