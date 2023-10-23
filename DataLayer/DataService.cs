@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using DataLayer;
 using DataLayer.YourOutputDirectory;
 
-public class DataService
+public class DataService : IDataService
 {
 
     public IList<Category> GetCategories()

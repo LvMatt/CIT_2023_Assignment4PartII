@@ -19,9 +19,9 @@ public class DataServiceTests
     [Fact]
     public void GetAllCategories_NoArgument_ReturnsAllCategories()
     {
+        // This function will work on purpose because I added multiple categories during working on this project
         var service = new DataService();
         var categories = service.GetCategories();
-        Console.WriteLine("IMPORTANT! {0}", categories);
         Assert.Equal(8, categories.Count);
         Assert.Equal("Beverages", categories.First().Name);
     }

@@ -151,7 +151,7 @@ public class WebServiceTests
         {
             id = category?.Value("id");
         }
-
+         
         var statusCode = await DeleteData($"{CategoriesApi}/{id}");
 
         Assert.Equal(HttpStatusCode.OK, statusCode);
