@@ -77,10 +77,9 @@ public class DataService : IDataService
     public Product? GetProduct(int categoryId)
     {
         var db = new NorthwindContext();
-        var product = db.Products.FirstOrDefault(x => x.Id == 1);
-        var categoryName = db.Categories.FirstOrDefault(x => x.Id == product.Categoryid);
-        product.CategoryName = Convert.ToString(categoryName.Name);
-        Console.WriteLine("SOM TU CI?2");
+        var product = db.Products.FirstOrDefault(x => x.Id == categoryId);
+        // var categoryName = db.Categories.FirstOrDefault(x => x.Id == product.Categoryid);
+        // product.CategoryName = Convert.ToString(categoryName.Name);
         return product;
     }
 
