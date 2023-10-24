@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using DataLayer;
 using DataLayer.YourOutputDirectory;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,8 @@ public class ProductsController : ControllerBase
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            ReferenceHandler = ReferenceHandler.Preserve
+
         };
 
 

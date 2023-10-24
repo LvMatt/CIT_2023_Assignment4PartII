@@ -2,8 +2,9 @@
 
 var service = new DataService();
 var findOrderDetail = service.GetOrderDetailsByOrderId(10248);
+var order = service.GetOrder(10248);
 
-Console.WriteLine("IMPORTANT! {0}", findOrderDetail.First().Product);
+Console.WriteLine("IMPORTANT! {0}", order.OrderDetails?.First().Product?.Name);
 
 Console.ReadKey();
 

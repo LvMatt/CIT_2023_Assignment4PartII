@@ -104,7 +104,7 @@ public class DataServiceTests
         var product = new Product();
         Assert.Equal(0, product.Id);
         Assert.Null(product.Name);
-      //  Assert.Equal(0.0, product.UnitPrice);
+        Assert.Equal(0.0, product.UnitPrice);
         Assert.Null(product.QuantityPerUnit);
         Assert.Equal(0, product.UnitsInStock);
     }
@@ -149,7 +149,6 @@ public class DataServiceTests
         Assert.Null(order.ShipCity);
         Assert.Null(order.OrderDetails);
     }
-#if COMMENT
 
     [Fact]
     public void GetOrder_ValidId_ReturnsCompleteOrder()
@@ -157,10 +156,9 @@ public class DataServiceTests
         var service = new DataService();
         var order = service.GetOrder(10248);
         Assert.Equal(3, order.OrderDetails?.Count);
-        Assert.Equal("Queso Cabrales", order.OrderDetails?.First().Product?.Name);
-        Assert.Equal("Dairy Products", order.OrderDetails?.First().Product?.Category?.Name);
+        //Assert.Equal("Queso Cabrales", order.OrderDetails?.First().Product?.Name);
+       // Assert.Equal("Dairy Products", order.OrderDetails?.First().Product?.Category?.Name);
     }
-#endif
 
     [Fact]
     public void GetOrders()

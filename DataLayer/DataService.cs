@@ -5,6 +5,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore.Metadata;
 using DataLayer;
 using DataLayer.YourOutputDirectory;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public class DataService : IDataService
 {
@@ -78,8 +81,16 @@ public class DataService : IDataService
     {
         var db = new NorthwindContext();
         var product = db.Products.FirstOrDefault(x => x.Id == categoryId);
-        // var categoryName = db.Categories.FirstOrDefault(x => x.Id == product.Categoryid);
-        // product.CategoryName = Convert.ToString(categoryName.Name);
+        var categoryName = db.Categories.FirstOrDefault(x => x.Id == product.Categoryid).Name;
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
+
+
+        product.CategoryName = categoryName;
+        Console.WriteLine("SDADASD {0}", JsonSerializer.Serialize<Product>(product, options));
         return product;
     }
 
@@ -116,19 +127,20 @@ public class DataService : IDataService
                  QuantityPerUnit = p.QuantityPerUnit,
                  UnitPrice = p.UnitPrice,
                  UnitsInStock = p.UnitsInStock,
-                 CategoryName = Convert.ToString(db.Categories.FirstOrDefault(x => x.Id == p.Categoryid).Name) 
+                 CategoryName =db.Categories.FirstOrDefault(x => x.Id == p.Categoryid).Name
              })
             .ToList();
         return products; 
     }
 
-    public List<Order> GetOrder(int orderId)
+    public Order GetOrder(int orderId)
     {
         var db = new NorthwindContext();
-        var orders = db.Orders
+        var order = db.Orders
            .Where(p => p.Id == orderId)
-           .ToList();
-        return orders;
+           .Include(o => o.OrderDetails)  // Eager loading
+           .First();
+        return order;
     }
 
     public List<Order> GetOrders()
@@ -141,11 +153,13 @@ public class DataService : IDataService
     {
         var db = new NorthwindContext();
         var orders = db.Orderdetails
-        .Where(p => p.OrderId == id)
-        .ToList();
-        Console.WriteLine(orders.Count);
+            .Where(p => p.OrderId == id)
+            .Include(o => o.Product)  // Eager loading
+            .Include(o => o.Order)
+            //.ThenInclude(od => od.)// Include the Product within OrderDetails
 
-        // Handle the case when the order is not found (e.g., return an empty list)
+            .ToList();
+
         return orders;
     }
 

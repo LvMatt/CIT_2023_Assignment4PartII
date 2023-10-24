@@ -16,9 +16,9 @@ public partial class Product
 
     public string? QuantityPerUnit { get; set; }
 
-    public float UnitPrice { get; set; }
+    public float UnitPrice { get; set; } = 0.0F;
 
-    public int? UnitsInStock { get; set; }
+    public int? UnitsInStock { get; set; } = 0;
 
     public virtual Category? Category { get; set; }
 
