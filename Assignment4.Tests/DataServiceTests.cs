@@ -22,7 +22,7 @@ public class DataServiceTests
         // This function will work on purpose because I added multiple categories during working on this project
         var service = new DataService();
         var categories = service.GetCategories();
-        Assert.Equal(8, categories.Count);
+        Assert.Equal(9, categories.Count);
         Assert.Equal("Beverages", categories.First().Name);
     }
 

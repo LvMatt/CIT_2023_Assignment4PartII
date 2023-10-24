@@ -27,7 +27,7 @@ public class ProductsController : ControllerBase
     public IActionResult GetProduct(int id)
     {
         Product result = _dataService.GetProduct(id);
-        Console.WriteLine("ID {0}", id);
+
         if (result == null)
         {
             return NotFound();
@@ -41,10 +41,71 @@ public class ProductsController : ControllerBase
 
         };
 
-
         var resultJson = JsonSerializer.Serialize<Product>(result, options);
         Console.WriteLine("resultJson {0}", resultJson);
         return Ok(resultJson);
+    }
+
+    [HttpGet("categories/{id:int}")]
+    public IActionResult GetProductCategories(int id)
+    {
+        List<Product> result = _dataService.GetProductByCategory(id);
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
+
+        var resultJson = JsonSerializer.Serialize(result, options);
+
+        Console.WriteLine("DSDA1 {0}", resultJson);
+        return Ok(resultJson);
+    }
+
+
+    [HttpGet]
+    public IActionResult GetProductsByName([FromQuery] string name)
+    {
+        List<Product> result = _dataService.GetProductByName(name);
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
+
+        var resultJson = JsonSerializer.Serialize<List<Product>>(result, options);
+        string cleanedJson = RemoveJsonElements(resultJson, "$id", "$values");
+
+        Console.WriteLine("DSDA1 {0}", cleanedJson);
+        return Ok(cleanedJson);
+    }
+
+
+    public static string RemoveJsonElements(string json, params string[] elementNames)
+    {
+        try
+        {
+            using (JsonDocument doc = JsonDocument.Parse(json))
+            {
+                var root = doc.RootElement;
+
+                // Remove specified JSON elements
+                foreach (var elementName in elementNames)
+                {
+                    root.TryGetProperty(elementName, out _);
+                }
+
+                // Serialize the modified JSON back to a string
+                return root.GetRawText();
+            }
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Failed to parse JSON: {ex}");
+            return null;
+        }
     }
 
 

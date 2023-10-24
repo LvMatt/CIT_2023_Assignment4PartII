@@ -81,16 +81,9 @@ public class DataService : IDataService
     {
         var db = new NorthwindContext();
         var product = db.Products.FirstOrDefault(x => x.Id == categoryId);
+        if (product == null) return null;
         var categoryName = db.Categories.FirstOrDefault(x => x.Id == product.Categoryid).Name;
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            ReferenceHandler = ReferenceHandler.Preserve
-        };
-
-
         product.CategoryName = categoryName;
-        Console.WriteLine("SDADASD {0}", JsonSerializer.Serialize<Product>(product, options));
         return product;
     }
 
@@ -123,10 +116,13 @@ public class DataService : IDataService
              {
                  Id = p.Id,
                  Name = p.Name,
+                 Supplierid = p.Supplierid,
                  Categoryid = p.Categoryid,
                  QuantityPerUnit = p.QuantityPerUnit,
                  UnitPrice = p.UnitPrice,
                  UnitsInStock = p.UnitsInStock,
+                 Category = p.Category,
+                 Orderdetails = p.Orderdetails,
                  CategoryName =db.Categories.FirstOrDefault(x => x.Id == p.Categoryid).Name
              })
             .ToList();
