@@ -1,11 +1,14 @@
-﻿using DataLayer;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using DataLayer;
 using DataLayer.YourOutputDirectory;
 using Microsoft.AspNetCore.Mvc;
 using WebServer.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebServer.Controllers;
 
-[Route("api/categories")]
+[Route("api/products")]
 [ApiController]
 public class ProductsController : ControllerBase
 {
@@ -17,6 +20,28 @@ public class ProductsController : ControllerBase
     {
         _dataService = dataService;
         _linkGenerator = linkGenerator;
+    }
+
+    [HttpGet("{id:int}")]
+    public IActionResult GetProduct(int id)
+    {
+        Product result = _dataService.GetProduct(id);
+        Console.WriteLine("ID {0}", id);
+        if (result == null)
+        {
+            return NotFound();
+
+        }
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
+
+
+        var resultJson = JsonSerializer.Serialize<Product>(result, options);
+        Console.WriteLine("resultJson {0}", resultJson);
+        return Ok(resultJson);
     }
 
 

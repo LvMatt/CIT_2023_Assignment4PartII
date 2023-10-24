@@ -80,6 +80,7 @@ public class DataService : IDataService
         var product = db.Products.FirstOrDefault(x => x.Id == 1);
         var categoryName = db.Categories.FirstOrDefault(x => x.Id == product.Categoryid);
         product.CategoryName = Convert.ToString(categoryName.Name);
+        Console.WriteLine("SOM TU CI?2");
         return product;
     }
 
